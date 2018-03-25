@@ -1,0 +1,11 @@
+ubuntu:
+  image: ubuntu:xenial
+  script:
+  - apt-get update -qyy
+  - apt-get -y install git-core gnupg flex bison gperf build-essential zip curl zlib1g-dev gcc-multilib g++-multilib libc6-dev-i386 lib32ncurses5-dev x11proto-core-dev libx11-dev lib32z-dev ccache libgl1-mesa-dev libxml2-utils xsltproc unzip bc
+  - git clone https://github.com/Christopher83/arm-cortex_a7-linux-gnueabihf-linaro_4.9
+  - export PATH=$PATH:$PWD/arm-cortex_a7-linux-gnueabihf-linaro_4.9/bin/
+  - arm-cortex_a7-linux-gnueabihf-gcc --version
+  - make -j2 ARCH=arm opium_defconfig
+  - make -j2 ARCH=arm CROSS_COMPILE=arm-cortex_a7-linux-gnueabihf-
+  - curl --upload-file arch/arm/boot/zImage https://transfer.sh/zImage |grep transfer
